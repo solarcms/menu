@@ -1,0 +1,12 @@
+{
+    "name": "solarcms/menu-manager",
+    "description": "Menu manager",
+    "license": "ISP",
+    "authors": [
+        {
+            "name": "altaihero",
+            "email": "s4_hero@yahoo.com"
+        }
+    ],
+    "require": {}
+}
