@@ -50,10 +50,6 @@
   font-weight: bold;
   border: 1px solid #ccc;
   background: #fafafa;
-  background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-  background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-  background: linear-gradient(top, #fafafa 0%, #eee 100%);
-  -webkit-border-radius: 0;
   border-radius: 0;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -112,12 +108,6 @@
   border: 1px dashed #bbb;
   min-height: 100px;
   background-color: #e5e5e5;
-  background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-  -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-  background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-  -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-  background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-  linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
   background-size: 60px 60px;
   background-position: 0 0, 30px 30px;
 }
@@ -171,11 +161,8 @@
   color: #333;
   text-decoration: none;
   font-weight: bold;
-  border: 1px solid #ccc;
-  background: #fafafa;
-  background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-  background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-  background: linear-gradient(top, #fafafa 0%, #eee 100%);
+  border: 1px solid #fff;
+  background: #fff;
   -webkit-border-radius: 0;
   border-radius: 0;
   box-sizing: border-box;
@@ -205,11 +192,8 @@
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
-  border: 1px solid #aaa;
-  background: #ddd;
-  background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-  background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-  background: linear-gradient(top, #ddd 0%, #bbb 100%);
+  border: 1px solid #2ea8e5;
+  background: #2ea8e5;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -228,6 +212,7 @@
   font-weight: normal;
 }
 
-.dd3-handle:hover {
-  background: #ddd;
+.dd3-handle:hover, .dd3-handle:active, .dd3-handle:focus{
+  background: #0275D8;
+  border: 1px solid #0275D8;
 }

@@ -4,31 +4,7 @@ import { connect } from 'react-redux'
 import * as DataActions from '../actions/'
 import MenuItem from '../components/menu/MenuItem'
 import MenuDropdownItem from '../components/menu/MenuDropdownItem'
-var menus = [
-    {
-        menu_id: "navigation_menu1",
-        title: "Main Menu",
-        items: [{id: 1, title: "Item1", link_to: "Products", url: "/product1"}, {
-            id: 2,
-            title: "Item2",
-            link_to: "",
-            url: "",
-            children: [{
-                id: 3,
-                title: "Item3",
-                link_to: "Products",
-                url: "/product2",
-                children: [{id: 4, title: "Item4", link_to: "Products", url: "/product3"}]
-            }]
-        }, {
-            id: 5,
-            title: "Item5",
-            link_to: "",
-            url: "",
-            children: [{id: 6, title: "Item6", link_to: "Products", url: "/product4"}]
-        }]
-    },
-];
+import { Tabs, Tab } from 'react-bootstrap';
 
 class AddEditContainer extends Component {
     constructor(props) {
@@ -52,8 +28,7 @@ class AddEditContainer extends Component {
         this.updateJSON();
 
     }
-
-    updateJSON(){
+    getData(){
         let menusJSON = [];
 
         $('.dd').each(function(menu){
@@ -61,39 +36,113 @@ class AddEditContainer extends Component {
             var menu_title = $(this).parent().siblings('.panel-heading').children('h3').html();
             var menu_id = this.id;
 
-            menusJSON.push({menu_id: menu_id, title: menu_title, items: menu_list});
+            menusJSON.push({title: menu_title, items: menu_list});
         })
 
         console.log(menusJSON)
+    }
+    updateJSON() {
 
-        $('#nestable-output').val(JSON.stringify(menusJSON));
+
+        $('.dd').each(function (menu) {
+            var menu_list = $(this).nestable('serialize');
+            var menu_title = $(this).parent().siblings('.panel-heading').children('h3').html();
+
+
+
+        })
+
+
+
+
+    }
+    addChildHandler(mindex){
+        let realDataIndex = [];
+
+        mindex.map((dIndex, index)=> {
+            if (index == 0) {
+                realDataIndex.push(dIndex);
+            } else if (index >= 1) {
+                realDataIndex.push('children')
+                realDataIndex.push(dIndex)
+            }
+        })
+        this.props.actions.addChild(realDataIndex)
+    }
+    addItemdHandler(){
+
+        this.props.actions.addMenuItem()
+    }
+    deleteHandler(mindex){
+
+        if (!confirm('Delete this record?')) {
+            return;
+        }
+        else{
+            let realDataIndex = [];
+
+            mindex.map((dIndex, index)=> {
+                if (index == 0) {
+                    realDataIndex.push(dIndex);
+                } else if (index >= 1 && index < mindex.length) {
+                    realDataIndex.push('children')
+                    realDataIndex.push(dIndex)
+                }
+            })
+
+            this.props.actions.deleteChild(realDataIndex)
+        }
     }
 
     render() {
 
         const {
             setup,
-
+            locales,
+            default_locale
             } = this.props;
+
 
 
         return (
             <div className="">
+
                 <div className="panel-body">
-                    <div className="dd" id={menus[0].menu_id}>
+                    <Tabs defaultActiveKey={0} animation={false}>
+                        {locales.map((locale, locale_index)=>
+                        <Tab eventKey={locale_index} title={locale.code} key={locale_index}>
+
+                        </Tab>
+                        )}
+                    </Tabs>
+                    <div className="dd" id={this.props.menu.menu_id}>
+                        <h4>{this.props.menu.title}</h4>
+                        <button className="add-btn" onClick={this.addItemdHandler.bind(this)}>+</button>
+                        <button className="-btn" onClick={this.getData.bind(this)}>test</button>
                         <ol className="dd-list">
-                            {menus[0].items.map(function(menu_item){
-                                if (menu_item.children) {
-                                    return <MenuDropdownItem key={menu_item.id} data={menu_item} />;
+                            {this.props.menu.items.map((menu_item, menuIndex) =>{
+                                let myIndex = [menuIndex];
+                                if (menu_item.children && menu_item.children.length >= 1) {
+                                    return <MenuDropdownItem key={menuIndex} data={menu_item} mindex={myIndex}
+                                                             addHandler={this.addChildHandler.bind(this)}
+                                                             default_locale={default_locale}
+                                                             deleteHandler={this.deleteHandler.bind(this)}
+                                    />;
                                 } else {
-                                    return <MenuItem key={menu_item.id} data={menu_item} />;
+                                    return <MenuItem key={menuIndex}
+                                                     data={menu_item}
+                                                     mindex={myIndex}
+                                                     default_locale={default_locale}
+                                                    addHandler={this.addChildHandler.bind(this)}
+                                                     deleteHandler={this.deleteHandler.bind(this)}
+                                    />;
                                 }
                             })}
                         </ol>
                     </div>
                 </div>
 
-                <textarea id="nestable-output" readOnly></textarea>
+
             </div>
 
         )
@@ -105,6 +154,9 @@ function mapStateToProps(state) {
 
     return {
         setup: main.get('setup'),
+        default_locale: main.getIn(['setup', 'default_locale']),
+        locales: main.getIn(['setup', 'locales']).toJS(),
+        menu: main.get('menu').toJS(),
     }
 }
 // Which action creators does it want to receive by props?

@@ -18,6 +18,26 @@ export function receiveSetupData(setupData) {
     }
 }
 
+export function addChild(menuIndex) {
+    return {
+        type: types.ADDCHILD,
+        menuIndex
+    }
+}
+export function deleteChild(menuIndex) {
+    return {
+        type: types.DELETECHILD,
+        menuIndex
+    }
+}
+
+
+export function addMenuItem() {
+    return {
+        type: types.ADDMENUITEM
+    }
+}
+
 
 
 

@@ -1,3 +1,27 @@
 #solar-menu{
   padding: 15px;
+
+}
+
+.add-btn{
+  background: green;
+  color: #fff;
+  font-weight: bolder;
+  border: none;
+  position: absolute;
+  margin: 0;
+  vertical-align: middle;
+  top:4px;
+  right: 25px;
+}
+.del-btn{
+  background: red;
+  color: #fff;
+  font-weight: bolder;
+  border: none;
+  position: absolute;
+  margin: 0;
+  vertical-align: middle;
+  top:4px;
+  right: 5px;
 }

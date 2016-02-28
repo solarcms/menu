@@ -8,7 +8,7 @@ const store = createStore();
 import { getSetupData } from './actions/'
 
 //call page setup datas
-//store.dispatch(getSetupData());
+store.dispatch(getSetupData());
 
 
 ReactDOM.render(
