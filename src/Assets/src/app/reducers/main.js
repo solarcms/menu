@@ -29,6 +29,14 @@ export default createReducer(initialState, {
 
         return state;
     },
+    [types.SETMENU](state, { menu }) {
+
+        const data = Immutable.fromJS(menu);
+
+        state = state.setIn(['menu', 'items'], data);
+
+        return state;
+    },
     [types.ADDCHILD](state, { menuIndex }) {
 
         let RealIndex = menuIndex;
@@ -42,14 +50,14 @@ export default createReducer(initialState, {
         let title = [];
         state.getIn(['setup', 'locales']).map(locale=>{
             title.push({
-                locale: locale,
+                locale: locale.get('code'),
                 value:null
             })
         })
         const newChild = Immutable.fromJS({
             title: title,
-            link_to: "",
-            url: "",
+            link_to: "1",
+            url: "2",
             children: []
 
         });
@@ -60,20 +68,39 @@ export default createReducer(initialState, {
 
         return state;
     },
+    [types.CHANGETITLE](state, { menuIndex, localeindex, value }) {
+
+        let RealIndex = menuIndex;
+
+
+        RealIndex.unshift('items')
+        RealIndex.unshift('menu')
+
+        RealIndex.push('title')
+        RealIndex.push(localeindex)
+        RealIndex.push('value')
+
+
+        state = state.setIn(RealIndex, value);
+
+        return state;
+    },
     [types.ADDMENUITEM](state, { }) {
+
 
         ///child title
         let title = [];
         state.getIn(['setup', 'locales']).map(locale=>{
+
             title.push({
-                locale: locale,
+                locale: locale.get('code'),
                 value:null
             })
         })
         const newChild = Immutable.fromJS({
             title: title,
-            link_to: "",
-            url: "",
+            link_to: "3",
+            url: "4",
             children: []
 
         });

@@ -17,6 +17,20 @@ export function receiveSetupData(setupData) {
         setupData
     }
 }
+export function setMenu(menu) {
+    return {
+        type: types.SETMENU,
+        menu
+    }
+}
+export function changeTitle(menuIndex, localeindex, value) {
+    return {
+        type: types.CHANGETITLE,
+        menuIndex: menuIndex,
+        localeindex: localeindex,
+        value:value
+    }
+}
 
 export function addChild(menuIndex) {
     return {

@@ -3,8 +3,8 @@ import MenuItem from './MenuItem'
 
 
 export default class MenuDropdownItem extends Component {
-    changeTitle(){
-
+    changeTitle(e){
+        this.props.changeMenuTitle(this.props.mindex, this.props.default_locale,  e.target.value)
     }
     addChild(){
         this.props.addHandler(this.props.mindex)
@@ -14,33 +14,43 @@ export default class MenuDropdownItem extends Component {
     }
     render() {
 
+        let title = this.props.data.title[this.props.default_locale].value;
 
         return (
-            <li className="dd-item dd3-item" data-title={this.props.data.title} data-id={this.props.data.id}>
-                <div className="dd-handle dd3-handle">Drag</div>
-                <div className="dd3-content">
+            <li id={this.props.mindex} data-title={title} className="sortableListsOpen">
 
-                    {this.props.data.title.map(title=>
-                    {title.locale == this.props.default_locale ? title.value : null}
-                    )}
-                    <button onClick={this.addChild.bind(this)} className="add-btn">
+                <div className="clickable">
+
+                    <input className="clickable" type="text" name=""
+                           id={this.props.mindex}
+                           onChange={this.changeTitle.bind(this)}
+                           value={title}
+                           placeholder="Нэр"
+                    />
+
+                    <button onClick={this.addChild.bind(this)} className="add-btn clickable">
                         +
                     </button>
-                    <button onClick={this.deleteChild.bind(this)} className="del-btn">
+                    <button onClick={this.deleteChild.bind(this)} className="del-btn clickable">
                         -
                     </button>
                 </div>
-                <ol className="dd-list">
+                <ul className="dd-list">
                     {this.props.data.children.map((menu_item, menuIndex)=>{
                         let myIndex = [menuIndex];
-                        if (menu_item.children) {
 
-                            let childIndex = this.props.mindex;
+                        let childIndex = this.props.mindex;
 
-                            myIndex = childIndex.concat(myIndex)
+                        myIndex = childIndex.concat(myIndex)
+
+
+                        if (menu_item.children && menu_item.children.length >= 1) {
+
+
 
                             return <MenuDropdownItem key={menuIndex} data={menu_item} mindex={myIndex}
                                                      addHandler={this.props.addHandler}
+                                                     changeMenuTitle={this.props.changeMenuTitle}
                                                      default_locale={this.props.default_locale}
                                                      deleteHandler={this.props.deleteHandler}
                             />;
@@ -48,12 +58,13 @@ export default class MenuDropdownItem extends Component {
 
                             return <MenuItem key={menuIndex} data={menu_item} mindex={myIndex}
                                              addHandler={this.props.addHandler}
+                                             changeMenuTitle={this.props.changeMenuTitle}
                                              default_locale={this.props.default_locale}
                                              deleteHandler={this.props.deleteHandler}
                             />
                         }
                     })}
-                </ol>
+                </ul>
             </li>
         )
     }
