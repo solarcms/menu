@@ -1,4 +1,4 @@
-import { setupPage, getFormData } from '../api/'
+import { getMenus } from '../api/'
 import * as types from '../constants/';
 
 
@@ -9,6 +9,12 @@ export function getSetupData() {
 
     return dispatch => {
         dispatch(receiveSetupData(setup))
+
+
+        getMenus().then((data)=>{
+            dispatch(receiveMenus(data))
+            window.location.replace('#/');
+        })
     }
 }
 export function receiveSetupData(setupData) {
@@ -17,10 +23,17 @@ export function receiveSetupData(setupData) {
         setupData
     }
 }
-export function setMenu(menu) {
+export function receiveMenus(menus) {
+    return {
+        type: types.SETMENUS,
+        menus
+    }
+}
+export function setMenu(menu, edit) {
     return {
         type: types.SETMENU,
-        menu
+        menu,
+        edit
     }
 }
 export function changeTitle(menuIndex, localeindex, value) {
@@ -28,6 +41,26 @@ export function changeTitle(menuIndex, localeindex, value) {
         type: types.CHANGETITLE,
         menuIndex: menuIndex,
         localeindex: localeindex,
+        value:value
+    }
+}
+export function changeLinkTo(menuIndex, value) {
+    return {
+        type: types.CHANGELINKTO,
+        menuIndex: menuIndex,
+        value:value
+    }
+}
+export function changeUrl(menuIndex, value) {
+    return {
+        type: types.CHANGEURL,
+        menuIndex: menuIndex,
+        value:value
+    }
+}
+export function changeSlug(value) {
+    return {
+        type: types.CHANGESLUG,
         value:value
     }
 }

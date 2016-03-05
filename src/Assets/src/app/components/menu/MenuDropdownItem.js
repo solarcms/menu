@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import MenuItem from './MenuItem'
-
+import {translate} from '../../utils/Translator'
+import Combobox from './ComboBox'
 
 export default class MenuDropdownItem extends Component {
     changeTitle(e){
@@ -12,21 +13,77 @@ export default class MenuDropdownItem extends Component {
     deleteChild(){
         this.props.deleteHandler(this.props.mindex)
     }
+    menuTypeChangeHandler(value){
+        this.props.changeMenuLinkto(this.props.mindex, value.value)
+    }
+    menuUrlHandler(e){
+        if(this.props.data.link_to == 'link')
+            this.props.changeUrl(this.props.mindex, e.target.value)
+        else
+            this.props.changeUrl(this.props.mindex, e.value)
+    }
+
     render() {
 
         let title = this.props.data.title[this.props.default_locale].value;
 
+
+        let typeOptios = [{
+            value:'link',
+            label:'Холбоос'
+        }];
+        let dataOptions = [];
+
+        this.props.menuTypes.map(menuType =>{
+            typeOptios.push({
+                value: menuType.slug,
+                label: menuType.slug
+            })
+
+            if(this.props.data.link_to == menuType.slug){
+                menuType.data.map(data=>{
+                    dataOptions.push({
+                        value: data[menuType.id_field],
+                        label: translate(data[menuType.text_field], this.props.default_locale)
+                    })
+                })
+            }
+        })
         return (
             <li id={this.props.mindex} data-title={title} className="sortableListsOpen">
 
-                <div className="clickable">
+                <div className="clickable sortDiv">
 
-                    <input className="clickable" type="text" name=""
-                           id={this.props.mindex}
-                           onChange={this.changeTitle.bind(this)}
-                           value={title}
-                           placeholder="Нэр"
-                    />
+
+                    <Combobox
+                        placeholder="Цэсний төрөл"
+                        options={typeOptios}
+                        value={this.props.data.link_to}
+                        changeHandler={this.menuTypeChangeHandler.bind(this)} />
+                    {this.props.data.link_to != 'link' ?<Combobox
+                        placeholder="Холбох зам"
+                        options={dataOptions}
+                        value={this.props.data.url}
+                        changeHandler={this.menuUrlHandler.bind(this)} />
+
+                        :
+                        <div className="menu-title">
+                            <input
+                                type="text"
+                                placeholder="Холбох зам"
+                                value={this.props.data.url}
+                                onChange={this.menuUrlHandler.bind(this)} />
+                        </div>}
+
+                    <div className="menu-title">
+                        <input className="clickable" type="text" name=""
+                               id={this.props.mindex}
+                               onChange={this.changeTitle.bind(this)}
+                               value={title}
+                               placeholder="Нэр"
+
+                        />
+                    </div>
 
                     <button onClick={this.addChild.bind(this)} className="add-btn clickable">
                         +
@@ -51,16 +108,22 @@ export default class MenuDropdownItem extends Component {
                             return <MenuDropdownItem key={menuIndex} data={menu_item} mindex={myIndex}
                                                      addHandler={this.props.addHandler}
                                                      changeMenuTitle={this.props.changeMenuTitle}
+                                                     changeMenuLinkto={this.props.changeMenuLinkto}
+                                                     changeUrl={this.props.changeUrl}
                                                      default_locale={this.props.default_locale}
                                                      deleteHandler={this.props.deleteHandler}
+                                                     menuTypes={this.props.menuTypes}
                             />;
                         } else {
 
                             return <MenuItem key={menuIndex} data={menu_item} mindex={myIndex}
                                              addHandler={this.props.addHandler}
                                              changeMenuTitle={this.props.changeMenuTitle}
+                                             changeMenuLinkto={this.props.changeMenuLinkto}
+                                             changeUrl={this.props.changeUrl}
                                              default_locale={this.props.default_locale}
                                              deleteHandler={this.props.deleteHandler}
+                                             menuTypes={this.props.menuTypes}
                             />
                         }
                     })}

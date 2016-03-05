@@ -1,6 +1,4 @@
 #ui-tree, #sortableListsBase {
-
-
   ul {
     margin: 0;
     padding: 0;
@@ -30,11 +28,12 @@
     background-color: dodgerblue;
   }
 
-  li div {
+  li div.sortDiv {
     padding: 7px;
     background-color: #fff;
     position: relative;
     cursor: default;
+    height: 37px;
   }
 
   //li, ul, div { border-radius: 3px; }
@@ -144,7 +143,7 @@
 }
 
 #treeBox{
-  max-width: 700px;
+  max-width:800px;
   display: block;
   position: relative;
   margin: 0;
@@ -152,7 +151,9 @@
 }
 
 .sortableListsCurrent{
-
+  button, .menu-title{
+    display: none;
+  }
 }
 #ui-tree{
   padding: 0px 10px 10px 10px;

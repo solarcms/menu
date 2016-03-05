@@ -5,8 +5,7 @@ import Immutable from 'immutable';
 import * as types from '../constants/';
 
 let testMenu = Immutable.fromJS({
-    menu_id: "navigation_menu1",
-    title: "Main Menu",
+    slug: "",
     items: []
 })
 
@@ -17,7 +16,8 @@ const initialState = Immutable.fromJS({
         default_locale:'EN',
         locales:[]
     },
-    menu:testMenu
+    menu:testMenu,
+    menus:[]
 });
 
 export default createReducer(initialState, {
@@ -26,14 +26,32 @@ export default createReducer(initialState, {
         const data = Immutable.fromJS(setupData);
 
         state = state.set('setup', data);
+        state = state.set('menu', testMenu);
 
         return state;
     },
-    [types.SETMENU](state, { menu }) {
+    [types.SETMENU](state, { menu, edit }) {
 
-        const data = Immutable.fromJS(menu);
 
-        state = state.setIn(['menu', 'items'], data);
+
+        if(edit){
+            const data = Immutable.fromJS(JSON.parse(menu.items));
+            const slug = menu.slug;
+            state = state.setIn(['menu', 'items'], data);
+            state = state.setIn(['menu', 'slug'], slug);
+            return state;
+        } else {
+            const data = Immutable.fromJS(menu);
+            state = state.setIn(['menu', 'items'], data);
+            return state;
+        }
+
+    },
+    [types.SETMENUS](state, { menus }) {
+
+        const data = Immutable.fromJS(menus);
+
+        state = state.set('menus', data);
 
         return state;
     },
@@ -56,15 +74,23 @@ export default createReducer(initialState, {
         })
         const newChild = Immutable.fromJS({
             title: title,
-            link_to: "1",
-            url: "2",
+            link_to: null,
+            url: null,
             children: []
 
         });
+        if(state.getIn(RealIndex))
+            state = state.updateIn(RealIndex, (children)=>
+                children.push(newChild)
+            );
+        else{
 
-        state = state.updateIn(RealIndex, (children)=>
-            children.push(newChild)
-        );
+            state = state.setIn(RealIndex, Immutable.fromJS([]))
+
+            state = state.updateIn(RealIndex, (children)=>
+                children.push(newChild)
+            );
+        }
 
         return state;
     },
@@ -85,6 +111,38 @@ export default createReducer(initialState, {
 
         return state;
     },
+    [types.CHANGELINKTO](state, { menuIndex, value }) {
+
+        let RealIndex = menuIndex;
+
+
+        RealIndex.unshift('items')
+        RealIndex.unshift('menu')
+
+        RealIndex.push('link_to')
+
+        state = state.setIn(RealIndex, value);
+
+        RealIndex.pop()
+        RealIndex.push('url')
+        state = state.setIn(RealIndex, null);
+
+        return state;
+    },
+    [types.CHANGEURL](state, { menuIndex, value }) {
+
+        let RealIndex = menuIndex;
+
+        RealIndex.unshift('items')
+        RealIndex.unshift('menu')
+
+        RealIndex.push('url')
+
+
+        state = state.setIn(RealIndex, value);
+
+        return state;
+    },
     [types.ADDMENUITEM](state, { }) {
 
 
@@ -99,8 +157,8 @@ export default createReducer(initialState, {
         })
         const newChild = Immutable.fromJS({
             title: title,
-            link_to: "3",
-            url: "4",
+            link_to: null,
+            url: null,
             children: []
 
         });
@@ -120,6 +178,15 @@ export default createReducer(initialState, {
 
 
         state = state.removeIn(RealIndex);
+
+        return state;
+    },
+    [types.CHANGESLUG](state, { value }) {
+
+
+
+
+        state = state.setIn(['menu', 'slug'], value);
 
         return state;
     },

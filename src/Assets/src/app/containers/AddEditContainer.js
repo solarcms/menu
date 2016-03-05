@@ -5,6 +5,8 @@ import * as DataActions from '../actions/'
 import MenuItem from '../components/menu/MenuItem'
 import MenuDropdownItem from '../components/menu/MenuDropdownItem'
 import { Tabs, Tab } from 'react-bootstrap';
+import Header from '../components/template/Header'
+import {saveNew, udateMenu} from '../api/index'
 
 class AddEditContainer extends Component {
     constructor(props) {
@@ -13,12 +15,30 @@ class AddEditContainer extends Component {
         this.state = {
             destroy: false,
             default_locale: this.props.locales[0].code,
-            key:0
+            key:0,
+            sending: false
         };
     }
 
     componentWillMount() {
+        if(this.props.params.id){
+            let editMenu = {};
 
+            this.props.menus.map(menu=>{
+                    if(menu.id == this.props.params.id)
+                        editMenu = menu
+            })
+
+            if(Object.keys(editMenu).length >= 1)
+                this.props.actions.setMenu(editMenu, true)
+            else
+                window.location.replace('#/');
+        }
+    }
+
+    componentWillUnmount() {
+
+        this.props.actions.getSetupData()
     }
     componentDidMount() {
 
@@ -70,15 +90,22 @@ class AddEditContainer extends Component {
         $('#sTree2').sortableLists( optionsPlus );
 
     }
-    getData(){
-        let pre_data = $('#sTree2').sortableListsToHierarchy();
+    saveMenu(){
 
+        if(this.props.menu.slug != ''){
+            if(this.props.params.id)
+            udateMenu(this.props.menu, this.props.params.id).then((data)=>{
 
-        let newItems =[]
+                window.location.replace('#/');
+            })
+            else
+            saveNew(this.props.menu).then((data)=>{
+                window.location.replace('#/');
+            })
+        }
 
-        pre_data.map(item=>{
-            newItems.push(this.getChildData(item))
-        })
+        else
+            alert('Цэсэнд зориулсан өгөгдлийг бүрэн оруулана уу')
     }
     getChildData(child){
 
@@ -173,7 +200,9 @@ class AddEditContainer extends Component {
         this.setState({ key: index });
         this.setState({ default_locale: this.props.locales[index].code });
     }
-
+    changeSlugHandler(e){
+        this.props.actions.changeSlug(e.target.value)
+    }
     changeMenuTitle(mindex, localeindex, value){
 
         let realDataIndex = [];
@@ -190,6 +219,40 @@ class AddEditContainer extends Component {
         this.props.actions.changeTitle(realDataIndex, localeindex, value)
     }
 
+    changeMenuLinkto(mindex, value){
+
+        let realDataIndex = [];
+
+        mindex.map((dIndex, index)=> {
+            if (index == 0) {
+                realDataIndex.push(dIndex);
+            } else if (index >= 1) {
+                realDataIndex.push('children')
+                realDataIndex.push(dIndex)
+            }
+        })
+
+        this.props.actions.changeLinkTo(realDataIndex, value)
+    }
+
+    changeUrl(mindex, value){
+
+
+
+        let realDataIndex = [];
+
+        mindex.map((dIndex, index)=> {
+            if (index == 0) {
+                realDataIndex.push(dIndex);
+            } else if (index >= 1) {
+                realDataIndex.push('children')
+                realDataIndex.push(dIndex)
+            }
+        })
+
+        this.props.actions.changeUrl(realDataIndex, value)
+    }
+
     render() {
 
         const {
@@ -199,8 +262,7 @@ class AddEditContainer extends Component {
             menuTypes
             } = this.props;
 
-
-
+        const sending = this.state.sending;
         let this_default_locale = this.state.default_locale
         let locale_index = this.state.key
 
@@ -219,6 +281,8 @@ class AddEditContainer extends Component {
                                              default_locale={locale_index}
                                              menuTypes={menuTypes}
                                              deleteHandler={this.deleteHandler.bind(this)}
+                                             changeMenuLinkto={this.changeMenuLinkto.bind(this)}
+                                             changeUrl={this.changeUrl.bind(this)}
                     />;
                 } else {
                     return <MenuItem key={menuIndex}
@@ -229,6 +293,8 @@ class AddEditContainer extends Component {
                                      addHandler={this.addChildHandler.bind(this)}
                                      changeMenuTitle={this.changeMenuTitle.bind(this)}
                                      deleteHandler={this.deleteHandler.bind(this)}
+                                     changeMenuLinkto={this.changeMenuLinkto.bind(this)}
+                                     changeUrl={this.changeUrl.bind(this)}
                     />;
                 }
             })}
@@ -238,7 +304,7 @@ class AddEditContainer extends Component {
 
         return (
             <div className="">
-
+                <Header addEdit={true}/>
                 <div className="panel-body">
                     <Tabs defaultActiveKey={0} animation={false}  activeKey={this.state.key} onSelect={this.changeLocale.bind(this)}>
                         {locales.map((locale, locale_index)=>
@@ -250,19 +316,41 @@ class AddEditContainer extends Component {
                     <div id="treeBox">
                         <div id="ui-tree">
 
-                            <h4>{this.props.menu.title}</h4>
+                            <h4><input type="text" value={this.props.menu.slug} onChange={this.changeSlugHandler.bind(this)}/></h4>
 
                             <button className="add-btn" onClick={this.addItemdHandler.bind(this)}>+</button>
-                            <button className="-btn" onClick={this.getData.bind(this)}>test</button>
 
                             {uiTree}
 
 
                         </div>
                     </div>
+                    <div className="menu-bottom">
+                        {sending === true
+                            ?<div className="sending spinner">
+                            <div className="bounce1"></div>
+                            <div className="bounce2"></div>
+                            <div className="bounce3"></div>
+                        </div>
 
+                            : <div>
+
+                            <button type="button" className="btn btn-fw btn-success p-h-lg"
+                                    onClick={this.saveMenu.bind(this)}>
+                                <i className="material-icons">&#xE2C3;</i> Хадгалах
+
+                            </button>
+
+                            &nbsp;
+                            <a href="#/" className="btn btn-fw danger p-h-lg">
+                                <i className="material-icons">&#xE5CD;</i> Болих
+                            </a>
+                        </div>
+                        }
+                    </div>
 
                 </div>
+
 
 
             </div>
@@ -280,6 +368,7 @@ function mapStateToProps(state) {
         menuTypes: main.getIn(['setup', 'menuTypes']).toJS(),
         locales: main.getIn(['setup', 'locales']).toJS(),
         menu: main.get('menu').toJS(),
+        menus: main.get('menus').toJS(),
         menuImmutable: main.get('menu'),
     }
 }
