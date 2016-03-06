@@ -49,6 +49,7 @@ export default class MenuDropdownItem extends Component {
                 })
             }
         })
+        let urlValue = this.props.data.url*1;
         return (
             <li id={this.props.mindex} data-title={title} className="sortableListsOpen">
 
@@ -71,7 +72,7 @@ export default class MenuDropdownItem extends Component {
                             <input
                                 type="text"
                                 placeholder="Холбох зам"
-                                value={this.props.data.url}
+                                value={urlValuel}
                                 onChange={this.menuUrlHandler.bind(this)} />
                         </div>}
 
