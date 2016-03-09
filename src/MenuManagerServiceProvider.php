@@ -26,6 +26,9 @@ class MenuManagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . DIRECTORY_SEPARATOR . 'Assets'. DIRECTORY_SEPARATOR . 'dist' => public_path('shared/menu'),
         ], 'menu');
+        $this->publishes([
+            __DIR__ . DIRECTORY_SEPARATOR . 'migration'. DIRECTORY_SEPARATOR . '2016_03_09_113321_create_menu_table.php' => base_path('database'. DIRECTORY_SEPARATOR . 'migrations'. DIRECTORY_SEPARATOR . '2016_03_09_113321_create_menu_table.php'),
+        ], 'menu-migration');
     }
 
     /**

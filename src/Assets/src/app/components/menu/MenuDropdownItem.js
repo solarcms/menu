@@ -64,7 +64,7 @@ export default class MenuDropdownItem extends Component {
                     {this.props.data.link_to != 'link' ?<Combobox
                         placeholder="Холбох зам"
                         options={dataOptions}
-                        value={this.props.data.url}
+                        value={urlValue}
                         changeHandler={this.menuUrlHandler.bind(this)} />
 
                         :
@@ -72,7 +72,7 @@ export default class MenuDropdownItem extends Component {
                             <input
                                 type="text"
                                 placeholder="Холбох зам"
-                                value={urlValuel}
+                                value={this.props.data.url}
                                 onChange={this.menuUrlHandler.bind(this)} />
                         </div>}
 

@@ -16,7 +16,7 @@ export default class MenuItem extends Component {
         this.props.changeMenuLinkto(this.props.mindex, value.value)
     }
     menuUrlHandler(e){
-
+        console.log(e)
         if(this.props.data.link_to == 'link')
             this.props.changeUrl(this.props.mindex, e.target.value)
         else
