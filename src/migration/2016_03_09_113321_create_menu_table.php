@@ -34,7 +34,7 @@ class CreateMenuTable extends Migration
      */
     public function down()
     {
-        Schema::drop('menu_type');
-        Schema::drop('menus');
+        Schema::drop('solar_menu_type');
+        Schema::drop('solar_menus');
     }
 }
