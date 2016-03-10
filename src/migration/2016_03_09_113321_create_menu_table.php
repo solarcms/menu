@@ -12,7 +12,7 @@ class CreateMenuTable extends Migration
      */
     public function up()
     {
-        Schema::create('menu_type', function (Blueprint $table) {
+        Schema::create('solar_menu_type', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->unique();
             $table->string('table');
@@ -20,7 +20,7 @@ class CreateMenuTable extends Migration
             $table->string('text_field');
             $table->tinyInteger('translated')->default(0);
         });
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('solar_menus', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug');
             $table->text('items');
@@ -34,7 +34,7 @@ class CreateMenuTable extends Migration
      */
     public function down()
     {
-        Schema::drop('menu_type');
-        Schema::drop('menus');
+        Schema::drop('solar_menu_type');
+        Schema::drop('solar_menus');
     }
 }
