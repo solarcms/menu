@@ -15,8 +15,8 @@ use App;
 class Menu
 {
     public $viewName = 'admin.menu';
-    public $default_locale = 'EN';
-    public $locales_table = 'locales';
+    public $default_locale = 'MN';
+    public $locales_table = 'solar_locales';
 
     public function run($action){
 
@@ -50,7 +50,7 @@ class Menu
 
         $locales = DB::table($this->locales_table)->select('id', 'code')->orderBy('id', 'ASC')->get();
 
-        $menu_slugs = DB::table('menu_type')->get();
+        $menu_slugs = DB::table('solar_menu_type')->get();
 
         $menuTypes = [];
 
@@ -91,7 +91,7 @@ class Menu
           'slug'=>$menu['slug'],
             'items'=>json_encode($menu['items'])
         ];
-        DB::table('menus')->insert($new);
+        DB::table('solar_menus')->insert($new);
 
         return 'success';
     }
@@ -103,7 +103,7 @@ class Menu
           'slug'=>$menu['slug'],
             'items'=>json_encode($menu['items'])
         ];
-        DB::table('menus')->where('id', '=', $id)->update($new);
+        DB::table('solar_menus')->where('id', '=', $id)->update($new);
 
         return 'success';
     }
@@ -111,13 +111,13 @@ class Menu
 
         $id = Request::input('id');
 
-        DB::table('menus')->where('id', '=', $id)->delete();
+        DB::table('solar_menus')->where('id', '=', $id)->delete();
 
         return 'success';
     }
     public function listMenu(){
 
-        $menus = DB::table('menus')->get();
+        $menus = DB::table('solar_menus')->get();
 
         return $menus;
     }
