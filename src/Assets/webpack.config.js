@@ -48,6 +48,13 @@ module.exports = {
             // File
         ]),
 
+        new Webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+
+
 
         new Webpack.BannerPlugin("*************************************\n   Solar Content Management System/ Menu Manager \n*************************************\n")
     ],
