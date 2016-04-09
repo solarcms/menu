@@ -44,7 +44,7 @@ export default class MenuDropdownItem extends Component {
                 menuType.data.map(data=>{
                     dataOptions.push({
                         value: data[menuType.id_field],
-                        label: translate(data[menuType.text_field], this.props.default_locale)
+                        label: menuType.translated == 1 ? translate(data[menuType.text_field], this.props.default_locale) : data[menuType.text_field]
                     })
                 })
             }

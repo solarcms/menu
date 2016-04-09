@@ -16,7 +16,7 @@ export default class MenuItem extends Component {
         this.props.changeMenuLinkto(this.props.mindex, value.value)
     }
     menuUrlHandler(e){
-        console.log(e)
+   
         if(this.props.data.link_to == 'link')
             this.props.changeUrl(this.props.mindex, e.target.value)
         else
@@ -44,7 +44,7 @@ export default class MenuItem extends Component {
                 menuType.data.map(data=>{
                     dataOptions.push({
                         value: data[menuType.id_field],
-                        label: translate(data[menuType.text_field], this.props.default_locale)
+                        label: menuType.translated == 1 ? translate(data[menuType.text_field], this.props.default_locale) : data[menuType.text_field]
                     })
                 })
             }
