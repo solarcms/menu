@@ -76,6 +76,7 @@ export default createReducer(initialState, {
             title: title,
             link_to: null,
             url: null,
+            className: null,
             children: []
 
         });
@@ -143,6 +144,20 @@ export default createReducer(initialState, {
 
         return state;
     },
+    [types.CHANGECLASS](state, { menuIndex, value }) {
+
+        let RealIndex = menuIndex;
+
+        RealIndex.unshift('items')
+        RealIndex.unshift('menu')
+
+        RealIndex.push('className')
+
+
+        state = state.setIn(RealIndex, value);
+
+        return state;
+    },
     [types.ADDMENUITEM](state, { }) {
 
 
@@ -159,6 +174,7 @@ export default createReducer(initialState, {
             title: title,
             link_to: null,
             url: null,
+            className: null,
             children: []
 
         });

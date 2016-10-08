@@ -7,6 +7,7 @@ import MenuDropdownItem from '../components/menu/MenuDropdownItem'
 import { Tabs, Tab } from 'react-bootstrap';
 import Header from '../components/template/Header'
 import {saveNew, udateMenu} from '../api/index'
+// import sortableListsToHierarchy from '../../change/jquery-sortable-lists.min';
 
 class AddEditContainer extends Component {
     constructor(props) {
@@ -218,6 +219,21 @@ class AddEditContainer extends Component {
 
         this.props.actions.changeTitle(realDataIndex, localeindex, value)
     }
+    changeMenuClass(mindex, value){
+
+        let realDataIndex = [];
+
+        mindex.map((dIndex, index)=> {
+            if (index == 0) {
+                realDataIndex.push(dIndex);
+            } else if (index >= 1) {
+                realDataIndex.push('children')
+                realDataIndex.push(dIndex)
+            }
+        })
+
+        this.props.actions.changeClass(realDataIndex, value)
+    }
 
     changeMenuLinkto(mindex, value){
 
@@ -278,6 +294,7 @@ class AddEditContainer extends Component {
                     return <MenuDropdownItem key={menuIndex} data={menu_item} mindex={myIndex}
                                              addHandler={this.addChildHandler.bind(this)}
                                              changeMenuTitle={this.changeMenuTitle.bind(this)}
+                                             changeMenuClass={this.changeMenuClass.bind(this)}
                                              default_locale={locale_index}
                                              menuTypes={menuTypes}
                                              deleteHandler={this.deleteHandler.bind(this)}
@@ -292,6 +309,7 @@ class AddEditContainer extends Component {
                                      menuTypes={menuTypes}
                                      addHandler={this.addChildHandler.bind(this)}
                                      changeMenuTitle={this.changeMenuTitle.bind(this)}
+                                     changeMenuClass={this.changeMenuClass.bind(this)}
                                      deleteHandler={this.deleteHandler.bind(this)}
                                      changeMenuLinkto={this.changeMenuLinkto.bind(this)}
                                      changeUrl={this.changeUrl.bind(this)}

@@ -9,6 +9,7 @@ export const SETMENU = 'SETMENU';
 export const CHANGETITLE = 'CHANGETITLE';
 export const CHANGELINKTO = 'CHANGELINKTO';
 export const CHANGEURL = 'CHANGEURL';
+export const CHANGECLASS = 'CHANGECLASS';
 export const CHANGESLUG = 'CHANGESLUG';
 export const SETMENUS = 'SETMENUS';
 

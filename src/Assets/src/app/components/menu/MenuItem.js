@@ -6,6 +6,9 @@ export default class MenuItem extends Component {
     changeTitle(e){
        this.props.changeMenuTitle(this.props.mindex, this.props.default_locale,  e.target.value)
     }
+    changeClass(e){
+       this.props.changeMenuClass(this.props.mindex,  e.target.value)
+    }
     addChild(){
         this.props.addHandler(this.props.mindex)
     }
@@ -13,20 +16,21 @@ export default class MenuItem extends Component {
         this.props.deleteHandler(this.props.mindex)
     }
     menuTypeChangeHandler(value){
-        this.props.changeMenuLinkto(this.props.mindex, value.value)
+        this.props.changeMenuLinkto(this.props.mindex, value)
     }
     menuUrlHandler(e){
    
         if(this.props.data.link_to == 'link')
             this.props.changeUrl(this.props.mindex, e.target.value)
         else
-            this.props.changeUrl(this.props.mindex, e.value)
+            this.props.changeUrl(this.props.mindex, e)
     }
 
 
 
     render() {
-        let title = this.props.data.title[this.props.default_locale].value;
+        let title = this.props.data.title[this.props.default_locale].value ? this.props.data.title[this.props.default_locale].value : '';
+
 
         let typeOptios = [{
             value:'link',
@@ -36,8 +40,8 @@ export default class MenuItem extends Component {
 
         this.props.menuTypes.map(menuType =>{
             typeOptios.push({
-                value: menuType.slug,
-                label: menuType.slug
+                value: ''+menuType.slug,
+                label: ''+menuType.slug
             })
 
             if(this.props.data.link_to == menuType.slug){
@@ -86,6 +90,16 @@ export default class MenuItem extends Component {
                                onChange={this.changeTitle.bind(this)}
                                value={title}
                                placeholder="Нэр"
+
+                        />
+                    </div>
+
+                    <div className="menu-title">
+                        <input className="clickable" type="text" name=""
+                               id={`${this.props.mindex}_`}
+                               onChange={this.changeClass.bind(this)}
+                               value={this.props.data.className}
+                               placeholder="Class-css"
 
                         />
                     </div>

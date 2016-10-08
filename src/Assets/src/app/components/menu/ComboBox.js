@@ -15,6 +15,7 @@ export default class ComboBox extends Component {
                         clearable={false}
                         onChange={changeHandler}
                         placeholder={placeholder}
+                        simpleValue
                     />
 
 

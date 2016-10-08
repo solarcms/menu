@@ -58,6 +58,13 @@ export function changeUrl(menuIndex, value) {
         value:value
     }
 }
+export function changeClass(menuIndex, value) {
+    return {
+        type: types.CHANGECLASS,
+        menuIndex: menuIndex,
+        value:value
+    }
+}
 export function changeSlug(value) {
     return {
         type: types.CHANGESLUG,

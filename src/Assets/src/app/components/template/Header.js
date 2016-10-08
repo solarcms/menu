@@ -8,13 +8,12 @@ export default class Header extends Component {
         let addButton = <a href='#/add' className="nav-link"><i className="material-icons">&#xE145;</i> Нэмэх</a>
 
 
-
         return (
             <div className="tp_header">
-                <div className="white box-shadow-z0 b-b">
+
                     <div className="navbar">
                   
-                        <div className="navbar-item pull-left h6 p-l" id="pageTitle" >Цэсний удирдлага</div>
+                        <div className="navbar-item pull-left h6 p-l hidden-xs" id="pageTitle" style={{'margin':0}}>Цэсний удирдлага</div>
 
                         <div>
                             {this.props.addEdit == true ? null : <ul className="nav navbar-nav">
@@ -26,8 +25,9 @@ export default class Header extends Component {
 
 
                     </div>
-                </div>
+
             </div>
+
         )
     }
 }

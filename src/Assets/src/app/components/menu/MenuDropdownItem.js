@@ -14,7 +14,7 @@ export default class MenuDropdownItem extends Component {
         this.props.deleteHandler(this.props.mindex)
     }
     menuTypeChangeHandler(value){
-        this.props.changeMenuLinkto(this.props.mindex, value.value)
+        this.props.changeMenuLinkto(this.props.mindex, value)
     }
     menuUrlHandler(e){
         if(this.props.data.link_to == 'link')
@@ -109,6 +109,7 @@ export default class MenuDropdownItem extends Component {
                             return <MenuDropdownItem key={menuIndex} data={menu_item} mindex={myIndex}
                                                      addHandler={this.props.addHandler}
                                                      changeMenuTitle={this.props.changeMenuTitle}
+                                                     changeMenuClass={this.props.changeMenuClass}
                                                      changeMenuLinkto={this.props.changeMenuLinkto}
                                                      changeUrl={this.props.changeUrl}
                                                      default_locale={this.props.default_locale}
@@ -120,6 +121,7 @@ export default class MenuDropdownItem extends Component {
                             return <MenuItem key={menuIndex} data={menu_item} mindex={myIndex}
                                              addHandler={this.props.addHandler}
                                              changeMenuTitle={this.props.changeMenuTitle}
+                                             changeMenuClass={this.props.changeMenuClass}
                                              changeMenuLinkto={this.props.changeMenuLinkto}
                                              changeUrl={this.props.changeUrl}
                                              default_locale={this.props.default_locale}

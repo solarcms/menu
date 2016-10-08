@@ -11,12 +11,29 @@ use Illuminate\Routing\ResponseFactory as Resp;
 
 use Illuminate\Support\Facades\Validator;
 use App;
+use Config;
 
 class Menu
 {
     public $viewName = 'admin.menu';
     public $default_locale = 'MN';
     public $locales_table = 'solar_locales';
+    public $menu_type_table = 'solar_menu_type';
+    public $menu_table = 'solar_menus';
+
+
+    function __construct()
+    {
+        $this->config = Config::get('solar_menu_config');
+
+        //translation config
+        $this->default_locale = $this->config['default_locale'];
+        $this->locales_table = $this->config['locales_table'];
+        $this->menu_type_table = $this->config['menu_type_table'];
+        $this->menu_table = $this->config['menu_table'];
+
+    }
+
 
     public function run($action){
 
@@ -50,7 +67,7 @@ class Menu
 
         $locales = DB::table($this->locales_table)->select('id', 'code')->orderBy('id', 'ASC')->get();
 
-        $menu_slugs = DB::table('solar_menu_type')->get();
+        $menu_slugs = DB::table($this->menu_type_table)->get();
 
         $menuTypes = [];
 
@@ -91,7 +108,7 @@ class Menu
           'slug'=>$menu['slug'],
             'items'=>json_encode($menu['items'])
         ];
-        DB::table('solar_menus')->insert($new);
+        DB::table($this->menu_table)->insert($new);
 
         return 'success';
     }
@@ -103,7 +120,7 @@ class Menu
           'slug'=>$menu['slug'],
             'items'=>json_encode($menu['items'])
         ];
-        DB::table('solar_menus')->where('id', '=', $id)->update($new);
+        DB::table($this->menu_table)->where('id', '=', $id)->update($new);
 
         return 'success';
     }
@@ -111,13 +128,13 @@ class Menu
 
         $id = Request::input('id');
 
-        DB::table('solar_menus')->where('id', '=', $id)->delete();
+        DB::table($this->menu_table)->where('id', '=', $id)->delete();
 
         return 'success';
     }
     public function listMenu(){
 
-        $menus = DB::table('solar_menus')->get();
+        $menus = DB::table($this->menu_table)->get();
 
         return $menus;
     }
