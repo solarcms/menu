@@ -51,8 +51,8 @@ class AddEditContainer extends Component {
             opener: {
                 active: true,
                 as: 'html',  // if as is not set plugin uses background image
-                close: '<i class="material-icons icon-btn">&#xE15B;</i>',
-                open: '<i class="material-icons icon-btn">&#xE145;</i>',
+                close: '<i class="fa fa-chevron-right" aria-hidden="true"></i>',
+                open: '<i class="fa fa-chevron-down" aria-hidden="true"></i>',
                 openerCss: {
                     'display': 'inline-block',
                     'float': 'left',
