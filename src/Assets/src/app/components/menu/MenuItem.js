@@ -69,10 +69,11 @@ export default class MenuItem extends Component {
                         options={typeOptios}
                         value={this.props.data.link_to}
                         changeHandler={this.menuTypeChangeHandler.bind(this)} />
-                    {this.props.data.link_to != 'link' ?<Combobox
+                    {this.props.data.link_to != 'link' ?
+                        <Combobox
                         placeholder="Холбох зам"
                         options={dataOptions}
-                        value={urlValue}
+                        value={`${urlValue}`}
                         changeHandler={this.menuUrlHandler.bind(this)} />
 
                         :
