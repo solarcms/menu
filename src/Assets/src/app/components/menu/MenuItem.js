@@ -89,7 +89,7 @@ export default class MenuItem extends Component {
                         <input className="clickable" type="text" name=""
                                id={this.props.mindex}
                                onChange={this.changeTitle.bind(this)}
-                               value={title}
+                               value={`${title}`}
                                placeholder="Нэр"
 
                         />
