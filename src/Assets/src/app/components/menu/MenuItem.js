@@ -40,21 +40,21 @@ export default class MenuItem extends Component {
 
         this.props.menuTypes.map(menuType =>{
             typeOptios.push({
-                value: ''+menuType.slug,
+                value: `${menuType.slug}`,
                 label: ''+menuType.slug
             })
 
             if(this.props.data.link_to == menuType.slug){
                 menuType.data.map(data=>{
                     dataOptions.push({
-                        value: data[menuType.id_field],
+                        value: `${data[menuType.id_field]}`,
                         label: menuType.translated == 1 ? translate(data[menuType.text_field], this.props.default_locale) : data[menuType.text_field]
                     })
                 })
             }
         })
 
-        let urlValue = this.props.data.url*1;
+        let urlValue = this.props.data.url;
 
 
         return (
@@ -68,12 +68,14 @@ export default class MenuItem extends Component {
                         placeholder="Цэсний төрөл"
                         options={typeOptios}
                         value={this.props.data.link_to}
+                        simpleValue
                         changeHandler={this.menuTypeChangeHandler.bind(this)} />
                     {this.props.data.link_to != 'link' ?
                         <Combobox
                         placeholder="Холбох зам"
                         options={dataOptions}
                         value={`${urlValue}`}
+                        simpleValue
                         changeHandler={this.menuUrlHandler.bind(this)} />
 
                         :

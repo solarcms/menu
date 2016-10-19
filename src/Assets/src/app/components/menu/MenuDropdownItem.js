@@ -7,6 +7,9 @@ export default class MenuDropdownItem extends Component {
     changeTitle(e){
         this.props.changeMenuTitle(this.props.mindex, this.props.default_locale,  e.target.value)
     }
+    changeClass(e){
+        this.props.changeMenuClass(this.props.mindex,  e.target.value)
+    }
     addChild(){
         this.props.addHandler(this.props.mindex)
     }
@@ -17,10 +20,11 @@ export default class MenuDropdownItem extends Component {
         this.props.changeMenuLinkto(this.props.mindex, value)
     }
     menuUrlHandler(e){
+
         if(this.props.data.link_to == 'link')
             this.props.changeUrl(this.props.mindex, e.target.value)
         else
-            this.props.changeUrl(this.props.mindex, e.value)
+            this.props.changeUrl(this.props.mindex, e)
     }
 
     render() {
@@ -36,20 +40,21 @@ export default class MenuDropdownItem extends Component {
 
         this.props.menuTypes.map(menuType =>{
             typeOptios.push({
-                value: menuType.slug,
+                value: `${menuType.slug}`,
                 label: menuType.slug
             })
 
             if(this.props.data.link_to == menuType.slug){
                 menuType.data.map(data=>{
                     dataOptions.push({
-                        value: data[menuType.id_field],
+                        value: `${data[menuType.id_field]}`,
                         label: menuType.translated == 1 ? translate(data[menuType.text_field], this.props.default_locale) : data[menuType.text_field]
                     })
                 })
             }
         })
-        let urlValue = this.props.data.url*1;
+        let urlValue = this.props.data.url;
+    
         return (
             <li id={this.props.mindex} data-title={title} className="sortableListsOpen">
 
@@ -60,11 +65,13 @@ export default class MenuDropdownItem extends Component {
                         placeholder="Цэсний төрөл"
                         options={typeOptios}
                         value={this.props.data.link_to}
+                        simpleValue
                         changeHandler={this.menuTypeChangeHandler.bind(this)} />
                     {this.props.data.link_to != 'link' ?<Combobox
                         placeholder="Холбох зам"
                         options={dataOptions}
                         value={`${urlValue}`}
+                        simpleValue
                         changeHandler={this.menuUrlHandler.bind(this)} />
 
                         :
@@ -82,6 +89,15 @@ export default class MenuDropdownItem extends Component {
                                onChange={this.changeTitle.bind(this)}
                                value={title}
                                placeholder="Нэр"
+
+                        />
+                    </div>
+                    <div className="menu-title">
+                        <input className="clickable" type="text" name=""
+                               id={`${this.props.mindex}_`}
+                               onChange={this.changeClass.bind(this)}
+                               value={this.props.data.className}
+                               placeholder="Class-css"
 
                         />
                     </div>
